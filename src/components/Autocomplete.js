@@ -1,9 +1,26 @@
+//React
 import * as React from "react";
+
+//MUI
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export default function FreeSolo() {
+// Services
+import { postFunc } from "../services/mainApiServiices";
+
+const FreeSolo = props => {
+  const { service } = props;
+
+  const searchFunc = async value => {
+    const body = {
+      search: value
+    };
+
+    const response = await postFunc(service, body);
+
+    console.log(response.data, "stiglo");
+  };
   return (
     <Stack spacing={2}>
       <Autocomplete
@@ -11,6 +28,11 @@ export default function FreeSolo() {
         freeSolo
         options={top100Films.map(option => option.title)}
         renderInput={params => <TextField {...params} label="freeSolo" />}
+        onInputChange={e =>
+          e &&
+          3 <= e?.currentTarget?.value?.length &&
+          searchFunc(e?.currentTarget?.value)
+        }
       />
       <Autocomplete
         freeSolo
@@ -30,8 +52,141 @@ export default function FreeSolo() {
       />
     </Stack>
   );
-}
+};
 
+Autocomplete.defaultProps = {
+  label: "Label",
+  type: "text",
+  value: { label: "", id: "" },
+  error: false,
+  helperText: "",
+  required: false,
+  valuesToDisplay: [3],
+  charsToTrigger: 1,
+  disabled: false
+};
+export default FreeSolo;
+
+/*
+
+// React
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+// MUI
+import AutocompleteMUI from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
+
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
+// Services
+import { postFunc } from "Services/mainApiServices";
+
+const theme = createTheme({
+  palette: {
+    text: {
+      disabled: "#666666"
+    }
+  }
+});
+
+const optionText = (option, valuesToDisplay) => {
+  let label = "";
+  const values = Object.values(option);
+
+  if (typeof option === "object") {
+    valuesToDisplay.forEach(number => {
+      label += `${values[number]} `;
+    });
+    return label;
+  }
+  return option;
+};
+
+const Autocomplete = props => {
+  const { t } = useTranslation();
+
+  const [options, setOptions] = useState([]);
+  const {
+    value,
+    label,
+    validation,
+    required,
+    valuesToDisplay,
+    service,
+    setParentState,
+    charsToTrigger,
+    disabled,
+    dataCy
+  } = props;
+
+  const searchFunc = async value => {
+    const body = {
+      search: value
+    };
+
+    const response = await postFunc(service, body);
+
+    setOptions(response.data);
+  };
+
+  return (
+    <AutocompleteMUI
+      id="autocomplete"
+      dataCy={dataCy}
+      autoHighlight
+      disableOpenOnFocus
+      onInputChange={e =>
+        e &&
+        charsToTrigger <= e?.currentTarget?.value?.length &&
+        searchFunc(e?.currentTarget?.value)
+      }
+      onChange={(e, value) =>
+        setParentState({
+          label: value ? optionText(value, valuesToDisplay) : "",
+          id: value ? value.id : ""
+        })
+      }
+      getOptionLabel={option =>
+        option ? optionText(option, valuesToDisplay) : ""
+      }
+      options={options}
+      value={value.label}
+      disabled={disabled}
+      renderInput={params => (
+        <ThemeProvider theme={theme}>
+          <TextField
+            {...params}
+            label={t(label)}
+            required={required}
+            fullWidth
+            margin="dense"
+            size="small"
+            error={validation}
+            helperText={validation}
+          />
+        </ThemeProvider>
+      )}
+    />
+  );
+};
+
+Autocomplete.defaultProps = {
+  label: "Label",
+  type: "text",
+  value: { label: "", id: "" },
+  error: false,
+  helperText: "",
+  required: false,
+  valuesToDisplay: [3],
+  charsToTrigger: 1,
+  disabled: false
+};
+
+export default Autocomplete;
+
+
+*/
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
   { title: "The Shawshank Redemption", year: 1994 },
