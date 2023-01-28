@@ -5,7 +5,7 @@ export default function Nav() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
-    <ul className="nav-links mt-6 ml-3 bg-yellow-200 flex sm:ml-[20%] ">
+    <ul className="nav-links mt-6 ml-3 flex sm:ml-[20%] ">
       <Link
         to="/"
         className={
@@ -19,16 +19,16 @@ export default function Nav() {
         Movies
       </Link>
       <Link
-        to="/tv-shows"
+        to="/series"
         className={
           pathname.includes("/details")
             ? "hidden"
-            : pathname.includes("/tv-shows")
+            : pathname.includes("/series")
             ? "bg-sky-500 px-6 py-3 text-black rounded "
             : "px-6 py-3 text-sky-500 hover:text-sky-600"
         }
       >
-        Tv Shows
+        Series
       </Link>
       <Link
         to=".."

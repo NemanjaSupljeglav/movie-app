@@ -2,13 +2,14 @@
 import axios from "axios";
 
 //API
-const API = "http://www.omdbapi.com/?i=tt3896198&apikey=66f95eed?t=batman";
+const API = "http://www.omdbapi.com";
+const KEY = "66f95eed";
 
-export const postFunc = async url => {
+export const getFunc = async url => {
   return axios
-    .get("http://www.omdbapi.com/?i=tt3896198&apikey=66f95eed")
+    .get(`${API}/${url}&apikey=${KEY}`)
     .then(response => {
-      return response.data;
+      return response;
     })
     .catch(error => {
       return console.log(error.message);

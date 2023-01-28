@@ -8,16 +8,16 @@ import DebounceTextField from "../../components/DebounceTextField";
 //Context
 import { GlobalContext } from "../../context/GlobalState";
 
-const Movies = () => {
+const Series = () => {
   const context = useContext(GlobalContext);
   let navigate = useNavigate();
 
-  const handleGetMovies = data => {
+  const handleGetSeries = data => {
     if (data) {
-      context.getMoviesOrSeries(data, "movie");
+      context.getMoviesOrSeries(data, "series");
     } else context.clearMoviesOrSeries();
   };
-  const handleGetOneMovie = data => {
+  const handleGetOneSerie = data => {
     navigate(`/details/${data}`);
   };
 
@@ -27,13 +27,13 @@ const Movies = () => {
 
   return (
     <div className="mt-6 ml-3  w-[94%] sm:w-[60%] sm:ml-[20%]">
-      <DebounceTextField onChange={handleGetMovies} />
+      <DebounceTextField onChange={handleGetSeries} />
       <div className="sm:grid sm:grid-rows-5 sm:grid-flow-col sm:gap-4 mt-6">
         {context?.moviesOrSeries?.data?.Search?.map(item => (
           <div
             key={item?.imdbID}
-            onClick={() => handleGetOneMovie(item?.imdbID)}
-            className="flex flex-col items-center hover:brightness-50  duration-300 cursor-pointer"
+            onClick={() => handleGetOneSerie(item?.imdbID)}
+            className="flex flex-col  items-center hover:brightness-50  duration-300 cursor-pointer"
           >
             <img
               src={item?.Poster}
@@ -50,4 +50,4 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+export default Series;
